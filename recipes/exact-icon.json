@@ -1,0 +1,13 @@
+{
+  "format":"bitdraw-recipe", "version":1, "name":"精確尺寸圖示起稿",
+  "description":"0.8：從原圖重建指定寬高，保留比例與透明留白，再清理微小雜點。先確認預演；五官需另以 detail.protect 指定，每張圖重新定位。",
+  "parameters":{
+    "width":{"type":"integer","min":1,"max":1024,"default":96},
+    "height":{"type":"integer","min":1,"max":1024,"default":74},
+    "padding":{"type":"integer","min":0,"max":100,"default":2},
+    "colors":{"type":"integer","min":2,"max":64,"default":24},
+    "preset":{"type":"string","default":"illustration"},
+    "noiseArea":{"type":"integer","min":1,"max":32,"default":1}
+  },
+  "commands":[{"op":"image.pixelize","width":{"$param":"width"},"height":{"$param":"height"},"padding":{"$param":"padding"},"colors":{"$param":"colors"},"preset":{"$param":"preset"},"fit":"contain","finish":{"despeckle":{"maxArea":{"$param":"noiseArea"},"passes":1}}}]
+}

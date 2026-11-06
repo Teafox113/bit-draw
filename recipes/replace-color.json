@@ -1,0 +1,12 @@
+{
+  "format": "bitdraw-recipe",
+  "version": 1,
+  "name": "替換目前圖層指定色號",
+  "description": "只替換來源色與容許範圍內的像素，保留透明度。若只改單一相連區域，請先 document.regions，再用 region.paintVerified。",
+  "parameters": {
+    "from": {"type":"color","default":"#79b4a9"},
+    "to": {"type":"color","default":"#88aa62"},
+    "tolerance": {"type":"integer","min":0,"max":255,"default":0}
+  },
+  "commands": [{"op":"color.replace","from":[{"$param":"from"}],"color":{"$param":"to"},"tolerance":{"$param":"tolerance"}}]
+}

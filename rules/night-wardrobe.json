@@ -1,0 +1,72 @@
+{
+  "format": "bitdraw-region-rules",
+  "version": 1,
+  "name": "夜色衣著",
+  "categories": [
+    {
+      "category": "skin",
+      "colors": [
+        "#75423e",
+        "#b97253",
+        "#eeb88e",
+        "#f8d8af"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "hair",
+      "colors": [
+        "#28203e",
+        "#514037",
+        "#9b8161",
+        "#d5bd8a"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "clothes",
+      "colors": [
+        "#29324e",
+        "#625782",
+        "#c6ade2"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "shadow",
+      "colors": [
+        "#171c2d",
+        "#303950",
+        "#52546b"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "eyes",
+      "colors": [
+        "#171c2d",
+        "#f1f3eb"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "accessory",
+      "colors": [
+        "#67544a",
+        "#c6ad76",
+        "#ebd69a"
+      ],
+      "mode": "nearest"
+    },
+    {
+      "category": "background",
+      "colors": [
+        "#292536",
+        "#38606b",
+        "#79b4a9",
+        "#d3e3b0"
+      ],
+      "mode": "nearest"
+    }
+  ]
+}

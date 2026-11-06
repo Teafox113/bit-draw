@@ -1,0 +1,15 @@
+{
+ "format":"bitdraw-recipe","version":1,"name":"去背與五官優先圖示",
+ "description":"0.10 精細本機模型去背、臉部取景、五官優先縮色。照片 kind=photo/preset=photo；動漫 kind=illustration/preset=illustration。先預演並檢查，顯著背景物件可能殘留。",
+ "parameters":{
+  "width":{"type":"integer","min":8,"max":1024,"default":96},
+  "height":{"type":"integer","min":8,"max":1024,"default":74},
+  "colors":{"type":"integer","min":2,"max":64,"default":24},
+  "kind":{"type":"string","default":"auto"},
+  "preset":{"type":"string","default":"photo"},
+  "framing":{"type":"string","default":"face"},
+  "background":{"type":"string","default":"quality"},
+  "threshold":{"type":"number","min":0.1,"max":0.9,"default":0.5}
+ },
+ "commands":[{"op":"image.pixelize","width":{"$param":"width"},"height":{"$param":"height"},"padding":3,"colors":{"$param":"colors"},"kind":{"$param":"kind"},"preset":{"$param":"preset"},"framing":{"$param":"framing"},"removeBackground":{"$param":"background"},"subjectThreshold":{"$param":"threshold"},"preserveFeatures":true,"finish":{"autoProtect":true,"kind":{"$param":"kind"},"restoreDetails":true,"detailMode":"balanced","despeckle":{"maxArea":2}}}]
+}

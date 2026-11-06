@@ -1,0 +1,4 @@
+import {execFileSync} from 'node:child_process';import {readFile,stat} from 'node:fs/promises';
+const files=execFileSync('git',['ls-files','-z'],{encoding:'utf8'}).split('\0').filter(Boolean),runtime=JSON.parse(await readFile('.bitdraw-runtime.json','utf8').catch(()=>'{}'));let bytes=0;const bad=[];
+for(const f of files){const info=await stat(f);bytes+=info.size;if(info.size>=50*1024*1024||/node_modules|\.bitdraw-runtime|\.onnx$|\.bitdraw\.json$/.test(f))bad.push(f);const data=await readFile(f);if(runtime.token&&data.includes(Buffer.from(runtime.token)))bad.push(f+' contains runtime secret');if(/\.(mjs|js|json|md|html|cmd)$/.test(f)&&/(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)/.test(data.toString('utf8')))bad.push(f+' matches credential pattern');}
+console.log(JSON.stringify({files:files.length,bytes,issues:bad}));if(bad.length)process.exitCode=1;

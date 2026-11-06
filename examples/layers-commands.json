@@ -1,0 +1,6 @@
+[
+  { "op": "layer.add", "name": "代理修正" },
+  { "op": "paint.stroke", "color": "#ff8844", "points": [{ "x": 0, "y": 0 }] },
+  { "op": "layer.update", "patch": { "opacity": 0.5 } },
+  { "op": "swatch.save", "name": "角色色盤", "colors": ["#172c3c", "#ff8844", "#d3e3b0"] }
+]

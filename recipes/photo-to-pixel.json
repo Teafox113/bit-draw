@@ -1,0 +1,10 @@
+{
+  "format":"bitdraw-recipe", "version":1, "name":"任意圖片像素化起稿",
+  "description":"先從原圖取樣縮色，再分析與命名皮膚、頭髮、衣服等區域，最後套用分類配色規則。既有標註將失效；多圖層需維持尺寸。",
+  "parameters":{
+    "targetSize":{"type":"integer","min":1,"max":256,"default":64},
+    "colors":{"type":"integer","min":2,"max":64,"default":16},
+    "preset":{"type":"string","default":"photo"}
+  },
+  "commands":[{"op":"image.pixelize","targetSize":{"$param":"targetSize"},"colors":{"$param":"colors"},"preset":{"$param":"preset"}}]
+}

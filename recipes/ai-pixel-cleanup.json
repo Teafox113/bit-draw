@@ -1,0 +1,17 @@
+{
+  "format": "bitdraw-recipe",
+  "version": 1,
+  "name": "AI 像素圖重建與縮色",
+  "description": "先確認格線大小與起點。只重建目前圖層；多圖層需維持原畫布尺寸。預演後再套用。",
+  "parameters": {
+    "cellWidth": {"type":"integer","min":1,"max":4096,"default":8},
+    "cellHeight": {"type":"integer","min":1,"max":4096,"default":8},
+    "offsetX": {"type":"integer","min":0,"max":4095,"default":0},
+    "offsetY": {"type":"integer","min":0,"max":4095,"default":0},
+    "colors": {"type":"integer","min":2,"max":64,"default":16}
+  },
+  "commands": [
+    {"op":"rebuild","grid":{"cellWidth":{"$param":"cellWidth"},"cellHeight":{"$param":"cellHeight"},"offsetX":{"$param":"offsetX"},"offsetY":{"$param":"offsetY"},"method":"dominant"}},
+    {"op":"palette.reduce","count":{"$param":"colors"}}
+  ]
+}

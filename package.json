@@ -1,0 +1,19 @@
+{
+  "name": "bit-draw",
+  "version": "0.10.0",
+  "private": true,
+  "type": "module",
+  "description": "Local pixel reconstruction workbench",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "setup:models": "node scripts/setup-models.mjs",
+    "cli": "node cli.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "onnxruntime-web": "1.22.0"
+  }
+}

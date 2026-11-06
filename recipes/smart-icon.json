@@ -1,0 +1,16 @@
+{
+ "format":"bitdraw-recipe","version":1,"name":"自動五官保護圖示",
+ "description":"0.9 本機辨識、臉部取景、精確縮圖、眼口保護及彩色描邊；未找到臉時改用 framing=full。先預演並看成品，不保證任意圖片的五官或主體皆正確。",
+ "parameters":{
+  "width":{"type":"integer","min":1,"max":1024,"default":96},
+  "height":{"type":"integer","min":1,"max":1024,"default":74},
+  "padding":{"type":"integer","min":0,"max":100,"default":3},
+  "colors":{"type":"integer","min":2,"max":64,"default":24},
+  "kind":{"type":"string","default":"auto"},
+  "preset":{"type":"string","default":"illustration"},
+  "framing":{"type":"string","default":"face"},
+  "style":{"type":"string","default":"adaptive"},
+  "thickness":{"type":"integer","min":1,"max":4,"default":1}
+ },
+ "commands":[{"op":"image.pixelize","width":{"$param":"width"},"height":{"$param":"height"},"padding":{"$param":"padding"},"colors":{"$param":"colors"},"kind":{"$param":"kind"},"preset":{"$param":"preset"},"framing":{"$param":"framing"},"finish":{"autoProtect":true,"kind":{"$param":"kind"},"restoreDetails":true,"despeckle":{"maxArea":2},"outline":{"style":{"$param":"style"},"thickness":{"$param":"thickness"},"mode":"outer"}}}]
+}

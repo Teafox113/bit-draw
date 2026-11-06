@@ -1,0 +1,16 @@
+.bitdraw-runtime.json
+node_modules/
+dist/vendor/*.onnx
+dist/vendor/*.download
+dist/vendor/ort/*.mjs
+dist/vendor/ort/*.wasm
+qa/**/*.bitdraw.json
+qa/*-v*.json
+qa/real-v*/
+qa/baseline-v8/
+dist/quality-review*.html
+*.log
+Thumbs.db
+.DS_Store
+scripts/*-v9.mjs
+scripts/*-v10.mjs

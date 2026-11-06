@@ -1,0 +1,89 @@
+{
+  "format": "bitdraw-recipe",
+  "version": 1,
+  "name": "coffee 可重用像素配色流程",
+  "description": "每張圖提供新的 groups 座標；分類配色與處理步驟只儲存一次。",
+  "parameters": {
+    "groups": {
+      "type": "regionGroups"
+    },
+    "targetSize": {
+      "type": "integer",
+      "min": 1,
+      "max": 256,
+      "default": 80
+    }
+  },
+  "commands": [
+    {
+      "op": "image.pipeline",
+      "targetSize": {
+        "$param": "targetSize"
+      },
+      "colors": 24,
+      "preset": "photo",
+      "uncertainty": 0.06,
+      "groups": {
+        "$param": "groups"
+      },
+      "rules": {
+        "format": "bitdraw-region-rules",
+        "version": 1,
+        "name": "coffee 配色",
+        "categories": [
+          {
+            "category": "coffee",
+            "colors": [
+              "#663b27",
+              "#a36934",
+              "#dbab53",
+              "#f2d083"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "ceramic",
+            "colors": [
+              "#9b7958",
+              "#cfb78e",
+              "#f5e5c2",
+              "#fff5dc"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "glaze",
+            "colors": [
+              "#2b2130",
+              "#68404b",
+              "#a95c51",
+              "#e99566"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "metal",
+            "colors": [
+              "#242a39",
+              "#626d7c",
+              "#abb4b8",
+              "#ece9d5"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "table",
+            "colors": [
+              "#392b35",
+              "#715042",
+              "#a88058",
+              "#d6b784"
+            ],
+            "mode": "nearest"
+          }
+        ]
+      },
+      "reference": "source"
+    }
+  ]
+}

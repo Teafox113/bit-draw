@@ -1,0 +1,5 @@
+[
+  {"op":"palette.analyze","count":16,"name":"原圖工作色盤"},
+  {"op":"palette.mix","a":"#38606b","b":"#f1bd75","percent":50},
+  {"op":"outline.auto","mode":"inner","thickness":1,"color":"#172c3c","tolerance":20,"connectivity":4}
+]

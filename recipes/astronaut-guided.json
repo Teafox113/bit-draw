@@ -1,0 +1,89 @@
+{
+  "format": "bitdraw-recipe",
+  "version": 1,
+  "name": "astronaut 可重用像素配色流程",
+  "description": "每張圖提供新的 groups 座標；分類配色與處理步驟只儲存一次。",
+  "parameters": {
+    "groups": {
+      "type": "regionGroups"
+    },
+    "targetSize": {
+      "type": "integer",
+      "min": 1,
+      "max": 256,
+      "default": 64
+    }
+  },
+  "commands": [
+    {
+      "op": "image.pipeline",
+      "targetSize": {
+        "$param": "targetSize"
+      },
+      "colors": 24,
+      "preset": "photo",
+      "uncertainty": 0.06,
+      "groups": {
+        "$param": "groups"
+      },
+      "rules": {
+        "format": "bitdraw-region-rules",
+        "version": 1,
+        "name": "astronaut 配色",
+        "categories": [
+          {
+            "category": "skin",
+            "colors": [
+              "#69433c",
+              "#ac7764",
+              "#e2af8b",
+              "#f7d6ab"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "hair",
+            "colors": [
+              "#282326",
+              "#594732",
+              "#92744d",
+              "#cfb77a"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "clothes",
+            "colors": [
+              "#73352f",
+              "#ae4932",
+              "#e07845",
+              "#f1b475"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "equipment",
+            "colors": [
+              "#141921",
+              "#353e49",
+              "#7b8892",
+              "#dce3df"
+            ],
+            "mode": "nearest"
+          },
+          {
+            "category": "background",
+            "colors": [
+              "#292837",
+              "#645568",
+              "#a0a3ac",
+              "#d8d5c9"
+            ],
+            "mode": "nearest"
+          }
+        ]
+      },
+      "reference": "source"
+    }
+  ]
+}

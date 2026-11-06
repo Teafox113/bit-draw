@@ -1,0 +1,4 @@
+[
+  { "op": "palette.reduce", "count": 16 },
+  { "op": "paint.stroke", "color": "#d7fc70", "points": [{ "x": 0, "y": 0 }] }
+]
