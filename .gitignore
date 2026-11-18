@@ -14,3 +14,4 @@ Thumbs.db
 .DS_Store
 scripts/*-v9.mjs
 scripts/*-v10.mjs
+scripts/*-v11.mjs

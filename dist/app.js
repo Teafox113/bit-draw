@@ -426,7 +426,7 @@ async function agentRequest(request){
   captureDocument();
   if(request.action==='capabilities')return capabilities();
   if(request.action==='documents.list')return {ok:true,activeId:documents.activeId,documents:documents.list()};
-  if(request.action==='document.pixelPlan'&&(request.framing||request.removeBackground||['model','quality'].includes(request.subjectMode))){const d=documents.get(request.documentId),revision=d.revision,job=await tasks.run('plan',d.engine.project,{options:request});if(d.revision!==revision)throw Error('規劃期間文件已變動');return {ok:true,id:d.id,revision,...job.result};}
+  if(request.action==='document.pixelPlan'&&(request.framing||request.removeBackground||['model','quality','anime'].includes(request.subjectMode))){const d=documents.get(request.documentId),revision=d.revision,job=await tasks.run('plan',d.engine.project,{options:request});if(d.revision!==revision)throw Error('規劃期間文件已變動');return {ok:true,id:d.id,revision,...job.result};}
   if(automation){const result=await automation.handle(request);if(result!==undefined)return result;}
   if(request.action==='document.import'){
     if(!['image/png','image/jpeg','image/webp'].includes(request.mime)||typeof request.data!=='string'||request.data.length>28*1024*1024)throw Error('圖片格式或大小無效');

@@ -18,7 +18,7 @@ export function validateProtect(regions,width,height){
 export function protectionMask(regions,w,h){validateProtect(regions,w,h);const mask=new Uint8Array(w*h);for(const r of regions)for(let y=r.y;y<r.y+r.height;y++)mask.fill(1,y*w+r.x,y*w+r.x+r.width);return mask;}
 // Area-weighted source samples: exact output pixels, independent of export zoom.
 export function sampleExact(source,grid,{protect=[],onlyProtected=false,detailMode='strong'}={}){
-  if(!['balanced','strong'].includes(detailMode))throw Error('細節模式需 balanced/strong');
+  if(!['balanced','strong','crisp'].includes(detailMode))throw Error('細節模式需 balanced/strong/crisp');
   const layout=samplingLayout(source,grid.output),{width:w,height:h,content:d,source:s}=layout,px=new Array(w*h*4).fill(0),src=source.pixels,mask=protectionMask(protect,w,h);
   const matte=grid.output.matte,foreground=matte?decodeMatte(matte):null,inside=(x,y)=>!foreground||foreground[Math.min(matte.height-1,Math.floor(y/source.height*matte.height))*matte.width+Math.min(matte.width-1,Math.floor(x/source.width*matte.width))];
   for(let y=d.y;y<d.y+d.height;y++)for(let x=d.x;x<d.x+d.width;x++){
@@ -33,6 +33,13 @@ export function sampleExact(source,grid,{protect=[],onlyProtected=false,detailMo
     let color=center;
     if(weight>0&&weight>=(x1-x0)*(y1-y0)*.5){color=sum.map(v=>v/weight);if(grid.method==='dominant'){let best=[0];for(const g of groups.values())if(g[0]>best[0])best=g;color=best.slice(1).map(v=>v/best[0]);}
       if(mask[pos]){const luminance=c=>c[0]*.2126+c[1]*.7152+c[2]*.0722,mean=sum.map(v=>v/weight),average=luminance(mean);let candidate=null,low=average;for(const g of groups.values())if(g[0]/weight>=.08){const rgb=g.slice(1).map(v=>v/g[0]),lum=luminance(rgb);if(lum<low){low=lum;candidate=rgb;}}if(candidate&&average-low>35){const strength=detailMode==='strong'?1:Math.min(.6,48/(average-low));color=mean.map((v,k)=>v*(1-strength)+candidate[k]*strength);}}
+      if(mask[pos]&&detailMode==='crisp'){
+        // Preserve actual light/dark clusters in a cell; never invent eyes or draw a face template.
+        const mean=sum.map(v=>v/weight),luma=c=>c[0]*.2126+c[1]*.7152+c[2]*.0722,L=luma(mean),dark=[0,0,0,0],light=[0,0,0,0];
+        for(const g of groups.values()){const rgb=g.slice(1).map(v=>v/g[0]),v=luma(rgb),target=v<L-28?dark:v>L+40?light:null;if(target)for(let k=0;k<4;k++)target[k]+=g[k];}
+        const chosen=L<155&&light[0]/weight>=.14?light:dark[0]/weight>=.14?dark:null;
+        if(chosen){const rgb=chosen.slice(1).map(v=>v/chosen[0]),strength=Math.min(.9,.55+chosen[0]/weight);color=mean.map((v,k)=>v*(1-strength)+rgb[k]*strength);}
+      }
     }
     if(color)for(let k=0;k<4;k++)px[pos*4+k]=k===3?255:Math.round(color[k]);
   }

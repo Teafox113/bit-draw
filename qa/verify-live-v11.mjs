@@ -1,0 +1,15 @@
+import {readFile,writeFile} from 'node:fs/promises';import assert from 'node:assert/strict';
+import {unpackProject} from '../dist/project-codec.js';import {png} from './png.mjs';
+const sessionId=process.argv[2],runtime=JSON.parse(await readFile(new URL('../.bitdraw-runtime.json',import.meta.url),'utf8')),dir=new URL('./real-v11/',import.meta.url);
+async function call(request){const r=await fetch(runtime.url+'/api/request',{method:'POST',headers:{Authorization:'Bearer '+runtime.token,'Content-Type':'application/json'},body:JSON.stringify({sessionId,request})}),result=await r.json();assert.notEqual(result.ok,false,result.error);return result;}
+console.log(JSON.stringify(await call({action:'documents.list'})));
+const p=await unpackProject(JSON.parse(await readFile(new URL('coffee-background.bitdraw.json',dir),'utf8'))),s=p.source;
+const opened=await call({action:'document.import',name:'動漫複雜背景 · v0.11 QA',mime:'image/png',data:png(s.width,s.height,s.pixels).toString('base64')}),documentId=opened.id;
+const focus=await call({action:'document.focusPreview',documentId,expectedRevision:0,subjectMode:'anime',kind:'illustration'});assert.equal(focus.subject.method,'isnet-anime');assert.ok(focus.faces.length>0);await writeFile(new URL('live-detection.png',dir),Buffer.from(focus.png,'base64'));console.log(JSON.stringify({faces:focus.faces.length,subject:focus.subject,workerMs:focus.workerMs}));
+const recipe=await call({action:'recipe.save',recipe:JSON.parse(await readFile(new URL('../recipes/anime-icon.json',import.meta.url),'utf8'))}),request={action:'recipe.run',documentId,expectedRevision:0,recipeId:recipe.id,expectedUpdated:recipe.updated,values:{width:96,height:74}};
+const preview=await call({...request,dryRun:true});assert.equal((await call({action:'document.inspect',documentId})).revision,0);
+const after=await call(request),image=await call({action:'document.export',documentId});assert.equal(image.width,96);assert.equal(image.height,74);await writeFile(new URL('live-anime.png',dir),Buffer.from(image.png,'base64'));
+const saved=await call({action:'document.save',documentId});assert.equal(saved.project.project.version,5);await writeFile(new URL('live-anime.bitdraw.json',dir),JSON.stringify(saved.project));await call({action:'document.markSaved',documentId,expectedRevision:after.revision});
+const reopened=await call({action:'document.open',project:saved.project}),inspect=await call({action:'document.inspect',documentId:reopened.id}),reimage=await call({action:'document.export',documentId:reopened.id});assert.equal(reimage.png,image.png);assert.equal(inspect.grid.output.matte.runs,undefined);assert.equal(inspect.width,96);assert.equal(inspect.height,74);
+await call({action:'document.view',documentId:reopened.id,view:{compareMode:'horizontal'}});
+await writeFile(new URL('live-report.json',dir),JSON.stringify({documentId,reopenedId:reopened.id,focusMs:focus.workerMs,preview,after},null,2));console.log(JSON.stringify({ok:true,documentId,reopenedId:reopened.id,revision:after.revision,workerMs:after.workerMs}));

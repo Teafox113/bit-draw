@@ -18,3 +18,10 @@ test('loopback bridge authenticates, isolates sessions, delivers once and expire
   const timeout=await call('request',{sessionId:a,request:{action:'document.inspect'}});assert.equal(timeout.body.ok,false);assert.equal(timeout.body.uncertain,false);
  }finally{bridge.close();await new Promise(resolve=>server.close(resolve));}
 });
+test('long model jobs keep their session alive; completed and timed-out jobs allow inspection',async()=>{
+ const bridge=createBridge({port:4173,timeout:350,sessionTTL:40}),server=http.createServer((req,res)=>bridge.handle(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;
+ const call=(route,data)=>new Promise((resolve,reject)=>{const req=http.request({hostname:'127.0.0.1',port,path:'/api/'+route,method:data?'POST':'GET',headers:{Host:'127.0.0.1:4173',Authorization:'Bearer '+bridge.token,'Content-Type':'application/json'}},res=>{let raw='';res.on('data',d=>raw+=d);res.on('end',()=>resolve(JSON.parse(raw)));});req.on('error',reject);req.end(data?JSON.stringify(data):undefined);});
+ try{const sessionId=(await call('session',{label:'slow model'})).id,result=call('request',{sessionId,request:{action:'document.focus'}});await new Promise(r=>setTimeout(r,10));const job=(await call('poll',{sessionId})).job;assert.ok(job);await new Promise(r=>setTimeout(r,70));assert.ok((await call('sessions')).sessions.some(s=>s.id===sessionId));await call('result',{sessionId,id:job.id,result:{ok:true}});assert.equal((await result).ok,true);assert.ok((await call('sessions')).sessions.some(s=>s.id===sessionId));
+ const expired=call('request',{sessionId,request:{action:'document.inspect'}});assert.equal((await expired).uncertain,false);assert.ok((await call('sessions')).sessions.some(s=>s.id===sessionId));
+ }finally{bridge.close();await new Promise(r=>server.close(r));}
+});

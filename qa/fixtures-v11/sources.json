@@ -1,0 +1,35 @@
+[
+  {
+    "name": "anime",
+    "file": "anime.rgba.gz",
+    "width": 1110,
+    "height": 2100,
+    "sha256": "f55f185ca5ef623417d6682998fd7457712defae4bcf84f9f12173423c8eef97",
+    "author": "Kasuga",
+    "license": "CC-BY-SA-3.0",
+    "url": "https://commons.wikimedia.org/wiki/File:Wikipe-tan_full_length.png",
+    "changes": "由原始圖片解碼為 RGBA"
+  },
+  {
+    "name": "photo",
+    "file": "photo.rgba.gz",
+    "width": 809,
+    "height": 1024,
+    "sha256": "99b4eae7ea1615e334ed974a79eac5cde4229bfeaa9efd84faf55c25dfa10757",
+    "author": "NASA",
+    "license": "Public domain",
+    "url": "https://commons.wikimedia.org/wiki/File:Eileen_Collins,_early_NASA_portrait.jpg",
+    "changes": "縮至長邊 1024 px，作為測試背景及照片回歸素材"
+  },
+  {
+    "name": "coffee",
+    "file": "coffee.rgba.gz",
+    "width": 600,
+    "height": 400,
+    "sha256": "2c9022e5a85bd6baa1679a11f91fa94fd1d69ba879414f5da7c55066ea3b28fc",
+    "author": "Rachel Michetti",
+    "license": "CC0-1.0",
+    "url": "https://scikit-image.org/docs/stable/api/skimage.data.html#skimage.data.coffee",
+    "changes": "由原始圖片解碼為 RGBA"
+  }
+]

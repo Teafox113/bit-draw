@@ -1,0 +1,12 @@
+{
+ "format":"bitdraw-recipe","version":1,"name":"動漫角色圖示",
+ "description":"動漫角色去背、眼口清晰取樣與縮色。需 setup:anime；請先預演核對，多人物或遮擋場景可能仍需修正。",
+ "parameters":{
+  "width":{"type":"integer","min":8,"max":1024,"default":96},
+  "height":{"type":"integer","min":8,"max":1024,"default":74},
+  "colors":{"type":"integer","min":2,"max":64,"default":24},
+  "framing":{"type":"string","default":"face"},
+  "threshold":{"type":"number","min":0.1,"max":0.9,"default":0.5}
+ },
+ "commands":[{"op":"image.pixelize","width":{"$param":"width"},"height":{"$param":"height"},"padding":2,"colors":{"$param":"colors"},"kind":"illustration","preset":"illustration","framing":{"$param":"framing"},"removeBackground":"anime","subjectThreshold":{"$param":"threshold"},"preserveFeatures":true,"featureMode":"crisp","finish":{"autoProtect":true,"kind":"illustration","restoreDetails":true,"detailMode":"crisp","despeckle":{"maxArea":2}}}]
+}
